@@ -1,1 +1,1 @@
-This is 2d fighter for yandex lyceum
+This is 2d fighting for yandex lyceum
