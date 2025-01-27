@@ -1,4 +1,4 @@
-import  pygame
+import pygame
 import sys
 from timer import RepeatTimer
 import time
@@ -166,16 +166,67 @@ class Character(pygame.sprite.Sprite):
 
 
         elif self.color == RED:
+            if self.redright:
+                filer = 'Right'
+            if self.redleft:
+                filer = 'Left'
+            if not all(keys):
+                self.runred = False
+                self.attackred = False
             if keys[pygame.K_LEFT]:
+                self.attackred = False
+                self.runred = True
                 self.rect.x -= 5
+                self.redleft = True
+                self.redright = False
             if keys[pygame.K_RIGHT]:
+                self.attackred = False
+                self.runred = True
+
                 self.rect.x += 5
+                self.redleft = False
+                self.redright = True
             if keys[pygame.K_UP] and self.on_ground:
+                self.jumpred = True
                 self.vel_y = -15
                 self.on_ground = False
             if keys[pygame.K_RETURN]:
+                self.attackred = True
                 self.attack(player1)
+            if self.runred and not self.jumpred and not self.attackred:
+                self.frame += 0.2
+                if self.frame > 7:
+                    self.frame -= 7
+                anim = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png', '7.png', '8.png']
+                self.image = pygame.image.load(
+                    'Sprites/Samurai/' + filer + '/Run/' + anim[int(self.frame)]).convert_alpha()
+            elif not self.runred and not self.jumpred and not self.attackred and self.on_ground:
+                self.frame += 0.2
+                if self.frame > 5:
+                    self.frame -= 5
+                anim = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png']
+                self.image = pygame.image.load(
+                    'Sprites/Samurai/' + filer + '/Idle/' + anim[int(self.frame)]).convert_alpha()
+            elif self.jumpred and not self.on_ground:
+                self.frame += 0.2
+                if self.frame > 9:
+                    self.frame -= 9
+                anim = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png', '7.png', '8.png', '9.png', '10.png', '11.png', '12.png']
+                self.image = pygame.image.load(
+                    'Sprites/Samurai/' + filer + '/Jump/' + anim[int(self.frame)]).convert_alpha()
 
+            if self.attackred:
+                self.runred = False
+                self.frame += 0.2
+
+                anim = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png']
+                try:
+                    self.image = pygame.image.load(
+                        'Sprites/Samurai/' + filer + '/Attack_1/' + anim[int(self.frame)]).convert_alpha()
+                except IndexError:
+                    self.frame = 0
+            if self.on_ground:
+                self.jumpred = False
         self.vel_y += 1
         self.rect.y += self.vel_y
 
@@ -185,11 +236,12 @@ class Character(pygame.sprite.Sprite):
             self.on_ground = True
             self.vel_y = 0
             self.jumpblue = False
+            self.runred = False
 
     def attack(self, opponent):
 
         if self.rect.colliderect(opponent.rect):
-            opponent.health -= 10
+            opponent.health -= 0.5
             print(f"{opponent.color} health: {opponent.health}")
 
     def draw(self, surface):
@@ -200,7 +252,7 @@ class Character(pygame.sprite.Sprite):
 
 
 player1 = Character(100, HEIGHT - 50, BLUE, 'Sprites/Fighter/Right/Idle/1.png')
-player2 = Character(600, HEIGHT - 50, RED, 'Sprites/Samurai/Idle/1.png')
+player2 = Character(600, HEIGHT - 50, RED, 'Sprites/Samurai/Left/Idle/1.png')
 
 while True:
     for event in pygame.event.get():
