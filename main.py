@@ -11,6 +11,15 @@ WIDTH, HEIGHT = 800, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("2D Fighting Game")
 
+
+bgfight = pygame.image.load('Backgrounds/fightbackground.jpg').convert()
+bgmenu = pygame.image.load('Backgrounds/menubackground.jpg').convert()
+
+def DrawBack():
+    screen.blit(bgfight, (0, 0))
+
+DrawBack()
+
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
 RED = (255, 0, 0)
@@ -38,7 +47,7 @@ class Menu:
         while done:
             info.fill((255, 192, 203))
             screen.fill((255, 192, 203))
-
+            screen.blit(bgmenu, (0, 0))
             mp = pygame.mouse.get_pos()
             for i in self.punkts:
                 if mp[0] > i[0] and mp[0] < i[0] + 155 and mp[1] > i[1] and mp[1] < i[1] + 50:
@@ -61,8 +70,6 @@ class Menu:
                         done = False
                     elif punkt == 1:
                         exit()
-            screen.blit(info, (0, 0))
-            screen.blit(screen, (0, 30))
             pygame.display.flip()
 
 
@@ -246,7 +253,6 @@ class Character(pygame.sprite.Sprite):
 
     def draw(self, surface):
         screen.blit(self.image, self.rect)
-
         health_bar_length = 50 * (self.health / 100)
         pygame.draw.rect(surface, (255, 0, 0), (0, 0, health_bar_length, 5))
 
@@ -264,7 +270,7 @@ while True:
 
     player1.move(keys)
     player2.move(keys)
-    screen.fill(WHITE)
+    screen.blit(bgfight, (0, 0))
     player1.draw(screen)
     player2.draw(screen)
     pygame.display.flip()
