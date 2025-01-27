@@ -7,14 +7,15 @@ import time
 pygame.init()
 
 # Настройки экрана
-WIDTH, HEIGHT = 800, 600
+WIDTH, HEIGHT = 1920, 1080
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("2D Fighting Game")
 
 
-bgfight = pygame.image.load('Backgrounds/fightbackground.jpg').convert()
+bgfight = pygame.image.load('Backgrounds/fightbackground.png').convert()
 bgmenu = pygame.image.load('Backgrounds/menubackground.jpg').convert()
-
+bgfight = pygame.transform.scale(bgfight, (1920, 1080))
+bgmenu = pygame.transform.scale(bgmenu, (1920, 1080))
 def DrawBack():
     screen.blit(bgfight, (0, 0))
 
