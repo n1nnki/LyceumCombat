@@ -239,8 +239,8 @@ class Character(pygame.sprite.Sprite):
         self.rect.y += self.vel_y
 
         # Проверка на землю
-        if self.rect.y >= HEIGHT - 200:
-            self.rect.y = HEIGHT - 200
+        if self.rect.y >= HEIGHT - 320:
+            self.rect.y = HEIGHT - 320
             self.on_ground = True
             self.vel_y = 0
             self.jumpblue = False
