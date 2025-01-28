@@ -99,7 +99,7 @@ class Character(pygame.sprite.Sprite):
         self.frame = 0
 
         self.blueleft = False
-        self.redleft = False
+        self.redleft = True
 
         self.blueright = True
         self.redright = True
