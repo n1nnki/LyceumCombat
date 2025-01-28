@@ -13,8 +13,8 @@ pygame.display.set_caption("2D Fighting Game")
 
 bgfight = pygame.image.load('data/Backgrounds/fightbackground.png').convert()
 bgmenu = pygame.image.load('data/Backgrounds/menubackground.jpg').convert()
-bgfight = pygame.transform.scale(bgfight, (1920, 1080))
-bgmenu = pygame.transform.scale(bgmenu, (1920, 1080))
+bgfight = pygame.transform.scale(bgfight, (WIDTH, HEIGHT))
+bgmenu = pygame.transform.scale(bgmenu, (WIDTH, HEIGHT))
 
 
 def DrawBack():
@@ -85,7 +85,7 @@ class Character(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         self.image = pygame.image.load(file).convert_alpha()
-        self.rect = pygame.Rect(x, y, 50, 50)
+        self.rect = pygame.Rect(x, y, 150, 300)
         self.color = color
         self.health = 100
         self.vel_y = 0
@@ -113,6 +113,7 @@ class Character(pygame.sprite.Sprite):
     def transforming(self, image):
         self.image = pygame.transform.scale(image, (500, 500))
 
+
     def move(self, keys):
         if self.color == BLUE:
             if self.blueright:
@@ -125,19 +126,19 @@ class Character(pygame.sprite.Sprite):
             if keys[pygame.K_a]:
                 self.attackblue = False
                 self.runblue = True
-                self.rect.x -= 5
+                self.rect.x -= 10
                 self.blueleft = True
                 self.blueright = False
             if keys[pygame.K_d]:
                 self.attackblue = False
                 self.runblue = True
 
-                self.rect.x += 5
+                self.rect.x += 10
                 self.blueleft = False
                 self.blueright = True
             if keys[pygame.K_w] and self.on_ground:
                 self.jumpblue = True
-                self.vel_y = -15
+                self.vel_y = -22
                 self.on_ground = False
             if keys[pygame.K_f]:
                 self.attackblue = True
@@ -192,19 +193,19 @@ class Character(pygame.sprite.Sprite):
             if keys[pygame.K_LEFT]:
                 self.attackred = False
                 self.runred = True
-                self.rect.x -= 5
+                self.rect.x -= 10
                 self.redleft = True
                 self.redright = False
             if keys[pygame.K_RIGHT]:
                 self.attackred = False
                 self.runred = True
 
-                self.rect.x += 5
+                self.rect.x += 10
                 self.redleft = False
                 self.redright = True
             if keys[pygame.K_UP] and self.on_ground:
                 self.jumpred = True
-                self.vel_y = -15
+                self.vel_y = -22
                 self.on_ground = False
             if keys[pygame.K_RETURN]:
                 self.attackred = True
@@ -252,8 +253,8 @@ class Character(pygame.sprite.Sprite):
         self.rect.y += self.vel_y
 
         # Проверка на землю
-        if self.rect.y >= HEIGHT - 320:
-            self.rect.y = HEIGHT - 320
+        if self.rect.y >= HEIGHT - 700:
+            self.rect.y = HEIGHT - 700
             self.on_ground = True
             self.vel_y = 0
             self.jumpblue = False
