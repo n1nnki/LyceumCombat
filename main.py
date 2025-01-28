@@ -12,8 +12,8 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("2D Fighting Game")
 
 
-bgfight = pygame.image.load('Backgrounds/fightbackground.png').convert()
-bgmenu = pygame.image.load('Backgrounds/menubackground.jpg').convert()
+bgfight = pygame.image.load('data/Backgrounds/fightbackground.png').convert()
+bgmenu = pygame.image.load('data/Backgrounds/menubackground.jpg').convert()
 bgfight = pygame.transform.scale(bgfight, (1920, 1080))
 bgmenu = pygame.transform.scale(bgmenu, (1920, 1080))
 def DrawBack():
@@ -29,7 +29,7 @@ info = pygame.Surface((800, 30))
 
 
 class Menu:
-    def __init__(self, punkts=[400, 350, u'Punkt', (250, 250, 30), (250, 30, 250)]):
+    def __init__(self, punkts=[800, 300, u'Punkt', (250, 250, 30), (250, 30, 250)]):
         self.punkts = punkts
 
     def render(self, poverhnost, font, num_punkt):
@@ -41,17 +41,15 @@ class Menu:
 
     def menu(self):
         done = True
-        font_menu = pygame.font.Font(None, 50)
+        font_menu = pygame.font.Font('data/Fonts/japanbrush.ttf', 200)
         pygame.key.set_repeat(0, 0)
         pygame.mouse.set_visible(True)
         punkt = 0
         while done:
-            info.fill((255, 192, 203))
-            screen.fill((255, 192, 203))
             screen.blit(bgmenu, (0, 0))
             mp = pygame.mouse.get_pos()
             for i in self.punkts:
-                if mp[0] > i[0] and mp[0] < i[0] + 155 and mp[1] > i[1] and mp[1] < i[1] + 50:
+                if mp[0] > i[0] and mp[0] < i[0] + 300 and mp[1] > i[1] and mp[1] < i[1] + 100:
                     punkt = i[5]
             self.render(screen, font_menu, punkt)
             for e in pygame.event.get():
@@ -74,8 +72,8 @@ class Menu:
             pygame.display.flip()
 
 
-a = [(350, 300, u'Играть', (11, 0, 77), (250, 250, 30), 0),
-     (350, 340, u'Выход', (11, 0, 77), (250, 250, 30), 1)]
+a = [(775, 300, u'PLAY', (0, 0, 0), (255, 0, 0), 0),
+     (775, 600, u'EXIT', (0, 0, 0), (255, 0, 0), 1)]
 game = Menu(a)
 game.menu()
 
@@ -144,21 +142,21 @@ class Character(pygame.sprite.Sprite):
                     self.frame -= 7
                 anim = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png', '7.png', '8.png']
                 self.image = pygame.image.load(
-                    'Sprites/Fighter/' + file + '/Run/' + anim[int(self.frame)]).convert_alpha()
+                    'data/Sprites/Fighter/' + file + '/Run/' + anim[int(self.frame)]).convert_alpha()
             elif not self.runblue and not self.jumpblue and not self.attackblue:
                 self.frame += 0.2
                 if self.frame > 5:
                     self.frame -= 5
                 anim = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png']
                 self.image = pygame.image.load(
-                    'Sprites/Fighter/' + file + '/Idle/' + anim[int(self.frame)]).convert_alpha()
+                    'data/Sprites/Fighter/' + file + '/Idle/' + anim[int(self.frame)]).convert_alpha()
             elif self.jumpblue:
                 self.frame += 0.2
                 if self.frame > 9:
                     self.frame -= 9
                 anim = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png', '7.png', '8.png', '9.png', '10.png']
                 self.image = pygame.image.load(
-                    'Sprites/Fighter/' + file + '/Jump/' + anim[int(self.frame)]).convert_alpha()
+                    'data/Sprites/Fighter/' + file + '/Jump/' + anim[int(self.frame)]).convert_alpha()
 
             if self.attackblue:
                 self.runblue = False
@@ -168,7 +166,7 @@ class Character(pygame.sprite.Sprite):
                 anim = ['1.png', '2.png', '3.png', '4.png']
                 try:
                     self.image = pygame.image.load(
-                        'Sprites/Fighter/' + file + '/Attack_1/' + anim[int(self.frame)]).convert_alpha()
+                        'data/Sprites/Fighter/' + file + '/Attack_1/' + anim[int(self.frame)]).convert_alpha()
                 except IndexError:
                     self.frame = 0
 
@@ -207,21 +205,21 @@ class Character(pygame.sprite.Sprite):
                     self.frame -= 7
                 anim = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png', '7.png', '8.png']
                 self.image = pygame.image.load(
-                    'Sprites/Samurai/' + filer + '/Run/' + anim[int(self.frame)]).convert_alpha()
+                    'data/Sprites/Samurai/' + filer + '/Run/' + anim[int(self.frame)]).convert_alpha()
             elif not self.runred and not self.jumpred and not self.attackred and self.on_ground:
                 self.frame += 0.2
                 if self.frame > 5:
                     self.frame -= 5
                 anim = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png']
                 self.image = pygame.image.load(
-                    'Sprites/Samurai/' + filer + '/Idle/' + anim[int(self.frame)]).convert_alpha()
+                    'data/Sprites/Samurai/' + filer + '/Idle/' + anim[int(self.frame)]).convert_alpha()
             elif self.jumpred and not self.on_ground:
                 self.frame += 0.2
                 if self.frame > 9:
                     self.frame -= 9
                 anim = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png', '7.png', '8.png', '9.png', '10.png', '11.png', '12.png']
                 self.image = pygame.image.load(
-                    'Sprites/Samurai/' + filer + '/Jump/' + anim[int(self.frame)]).convert_alpha()
+                    'data/Sprites/Samurai/' + filer + '/Jump/' + anim[int(self.frame)]).convert_alpha()
 
             if self.attackred:
                 self.runred = False
@@ -230,7 +228,7 @@ class Character(pygame.sprite.Sprite):
                 anim = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png']
                 try:
                     self.image = pygame.image.load(
-                        'Sprites/Samurai/' + filer + '/Attack_1/' + anim[int(self.frame)]).convert_alpha()
+                        'data/Sprites/Samurai/' + filer + '/Attack_1/' + anim[int(self.frame)]).convert_alpha()
                 except IndexError:
                     self.frame = 0
             if self.on_ground:
@@ -258,8 +256,8 @@ class Character(pygame.sprite.Sprite):
         pygame.draw.rect(surface, (255, 0, 0), (0, 0, health_bar_length, 5))
 
 
-player1 = Character(100, HEIGHT - 50, BLUE, 'Sprites/Fighter/Right/Idle/1.png')
-player2 = Character(600, HEIGHT - 50, RED, 'Sprites/Samurai/Left/Idle/1.png')
+player1 = Character(100, HEIGHT - 50, BLUE, 'data/Sprites/Fighter/Right/Idle/1.png')
+player2 = Character(600, HEIGHT - 50, RED, 'data/Sprites/Samurai/Left/Idle/1.png')
 
 while True:
     for event in pygame.event.get():
