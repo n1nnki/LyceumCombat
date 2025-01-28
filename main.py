@@ -11,13 +11,15 @@ WIDTH, HEIGHT = 1920, 1080
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("2D Fighting Game")
 
-
 bgfight = pygame.image.load('data/Backgrounds/fightbackground.png').convert()
 bgmenu = pygame.image.load('data/Backgrounds/menubackground.jpg').convert()
 bgfight = pygame.transform.scale(bgfight, (1920, 1080))
 bgmenu = pygame.transform.scale(bgmenu, (1920, 1080))
+
+
 def DrawBack():
     screen.blit(bgfight, (0, 0))
+
 
 DrawBack()
 
@@ -107,6 +109,10 @@ class Character(pygame.sprite.Sprite):
         self.attackblue = False
         self.attackred = False
 
+    #увеличивание персонажей
+    def transforming(self, image):
+        self.image = pygame.transform.scale(image, (500, 500))
+
     def move(self, keys):
         if self.color == BLUE:
             if self.blueright:
@@ -143,6 +149,7 @@ class Character(pygame.sprite.Sprite):
                 anim = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png', '7.png', '8.png']
                 self.image = pygame.image.load(
                     'data/Sprites/Fighter/' + file + '/Run/' + anim[int(self.frame)]).convert_alpha()
+                self.transforming(self.image)
             elif not self.runblue and not self.jumpblue and not self.attackblue:
                 self.frame += 0.2
                 if self.frame > 5:
@@ -150,6 +157,7 @@ class Character(pygame.sprite.Sprite):
                 anim = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png']
                 self.image = pygame.image.load(
                     'data/Sprites/Fighter/' + file + '/Idle/' + anim[int(self.frame)]).convert_alpha()
+                self.transforming(self.image)
             elif self.jumpblue:
                 self.frame += 0.2
                 if self.frame > 9:
@@ -157,6 +165,7 @@ class Character(pygame.sprite.Sprite):
                 anim = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png', '7.png', '8.png', '9.png', '10.png']
                 self.image = pygame.image.load(
                     'data/Sprites/Fighter/' + file + '/Jump/' + anim[int(self.frame)]).convert_alpha()
+                self.transforming(self.image)
 
             if self.attackblue:
                 self.runblue = False
@@ -167,6 +176,7 @@ class Character(pygame.sprite.Sprite):
                 try:
                     self.image = pygame.image.load(
                         'data/Sprites/Fighter/' + file + '/Attack_1/' + anim[int(self.frame)]).convert_alpha()
+                    self.transforming(self.image)
                 except IndexError:
                     self.frame = 0
 
@@ -206,6 +216,7 @@ class Character(pygame.sprite.Sprite):
                 anim = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png', '7.png', '8.png']
                 self.image = pygame.image.load(
                     'data/Sprites/Samurai/' + filer + '/Run/' + anim[int(self.frame)]).convert_alpha()
+                self.transforming(self.image)
             elif not self.runred and not self.jumpred and not self.attackred and self.on_ground:
                 self.frame += 0.2
                 if self.frame > 5:
@@ -213,13 +224,16 @@ class Character(pygame.sprite.Sprite):
                 anim = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png']
                 self.image = pygame.image.load(
                     'data/Sprites/Samurai/' + filer + '/Idle/' + anim[int(self.frame)]).convert_alpha()
+                self.transforming(self.image)
             elif self.jumpred and not self.on_ground:
                 self.frame += 0.2
                 if self.frame > 9:
                     self.frame -= 9
-                anim = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png', '7.png', '8.png', '9.png', '10.png', '11.png', '12.png']
+                anim = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png', '7.png', '8.png', '9.png', '10.png',
+                        '11.png', '12.png']
                 self.image = pygame.image.load(
                     'data/Sprites/Samurai/' + filer + '/Jump/' + anim[int(self.frame)]).convert_alpha()
+                self.transforming(self.image)
 
             if self.attackred:
                 self.runred = False
@@ -229,6 +243,7 @@ class Character(pygame.sprite.Sprite):
                 try:
                     self.image = pygame.image.load(
                         'data/Sprites/Samurai/' + filer + '/Attack_1/' + anim[int(self.frame)]).convert_alpha()
+                    self.transforming(self.image)
                 except IndexError:
                     self.frame = 0
             if self.on_ground:
