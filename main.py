@@ -272,8 +272,8 @@ class Character(pygame.sprite.Sprite):
         pygame.draw.rect(surface, (255, 0, 0), (0, 0, health_bar_length, 5))
 
 
-player1 = Character(300, HEIGHT - 50, BLUE, 'data/Sprites/Fighter/Right/Idle/1.png')
-player2 = Character(1550, HEIGHT - 50, RED, 'data/Sprites/Samurai/Left/Idle/1.png')
+player1 = Character(150, HEIGHT - 50, BLUE, 'data/Sprites/Fighter/Right/Idle/1.png')
+player2 = Character(1300, HEIGHT - 50, RED, 'data/Sprites/Samurai/Left/Idle/1.png')
 
 while True:
     for event in pygame.event.get():
