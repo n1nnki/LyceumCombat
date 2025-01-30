@@ -109,10 +109,9 @@ class Character(pygame.sprite.Sprite):
         self.attackblue = False
         self.attackred = False
 
-    #увеличивание персонажей
+    # увеличивание персонажей
     def transforming(self, image):
         self.image = pygame.transform.scale(image, (500, 500))
-
 
     def move(self, keys):
         if self.color == BLUE:
