@@ -81,11 +81,11 @@ game.menu()
 
 
 class Character(pygame.sprite.Sprite):
-    def __init__(self, x, y, color, file):
+    def __init__(self, x, y, color, file, coliderx, colidery):
         pygame.sprite.Sprite.__init__(self)
 
         self.image = pygame.image.load(file).convert_alpha()
-        self.rect = pygame.Rect(x, y, 150, 300)
+        self.rect = pygame.Rect(x, y, coliderx, colidery)
         self.color = color
         self.health = 100
         self.vel_y = 0
@@ -109,6 +109,15 @@ class Character(pygame.sprite.Sprite):
         self.attackblue = False
         self.attackred = False
 
+        self.shieldblue = False
+        self.shieldred = False
+
+        self.deadblue = False
+        self.deadred = False
+
+        self.attackblue2 = False
+        self.attackred2 = False
+
     # увеличивание персонажей
     def transforming(self, image):
         self.image = pygame.transform.scale(image, (500, 500))
@@ -122,14 +131,18 @@ class Character(pygame.sprite.Sprite):
             if not all(keys):
                 self.runblue = False
                 self.attackblue = False
-            if keys[pygame.K_a]:
+                self.attackblue2 = False
+                self.shieldblue = False
+            if keys[pygame.K_a] and self.rect.x >= 0:
                 self.attackblue = False
+                self.attackblue2 = False
                 self.runblue = True
                 self.rect.x -= 10
                 self.blueleft = True
                 self.blueright = False
-            if keys[pygame.K_d]:
+            if keys[pygame.K_d] and self.rect.x <= WIDTH - 500:
                 self.attackblue = False
+                self.attackblue2 = False
                 self.runblue = True
 
                 self.rect.x += 10
@@ -140,9 +153,19 @@ class Character(pygame.sprite.Sprite):
                 self.vel_y = -22
                 self.on_ground = False
             if keys[pygame.K_f]:
+                self.runblue = False
                 self.attackblue = True
-                self.attack(player2)
-            elif self.runblue and not self.jumpblue and not self.attackblue:
+                self.attack(player2, player1)
+            if keys[pygame.K_e]:
+                self.attackblue2 = True
+                self.runblue = False
+                self.attack(player2, player1)
+            if keys[pygame.K_c]:
+                self.attackblue2 = False
+                self.attackblue = False
+                self.runblue = False
+                self.shieldblue = True
+            elif self.runblue and not self.jumpblue and not self.attackblue and not self.attackblue2:
                 self.frame += 0.2
                 if self.frame > 7:
                     self.frame -= 7
@@ -150,7 +173,7 @@ class Character(pygame.sprite.Sprite):
                 self.image = pygame.image.load(
                     'data/Sprites/Fighter/' + file + '/Run/' + anim[int(self.frame)]).convert_alpha()
                 self.transforming(self.image)
-            elif not self.runblue and not self.jumpblue and not self.attackblue:
+            elif not self.runblue and not self.jumpblue and not self.attackblue and not self.attackblue2:
                 self.frame += 0.2
                 if self.frame > 5:
                     self.frame -= 5
@@ -167,9 +190,12 @@ class Character(pygame.sprite.Sprite):
                     'data/Sprites/Fighter/' + file + '/Jump/' + anim[int(self.frame)]).convert_alpha()
                 self.transforming(self.image)
 
+            if self.shieldblue:
+                self.image = pygame.image.load('data/Sprites/Fighter/' + file + '/Shield/2.png')
+                self.transforming(self.image)
             if self.attackblue:
                 self.runblue = False
-                self.frame += 0.2
+                self.frame += 0.15
                 if self.frame > 3:
                     self.frame -= 3
                 anim = ['1.png', '2.png', '3.png', '4.png']
@@ -179,7 +205,17 @@ class Character(pygame.sprite.Sprite):
                     self.transforming(self.image)
                 except IndexError:
                     self.frame = 0
-
+            if self.attackblue2:
+                self.frame += 0.15
+                if self.frame > 3:
+                    self.frame -= 3
+                anim = ['1.png', '2.png', '3.png', '4.png']
+                try:
+                    self.image = pygame.image.load(
+                        'data/Sprites/Fighter/' + file + '/Attack_2/' + anim[int(self.frame)]).convert_alpha()
+                    self.transforming(self.image)
+                except IndexError:
+                    self.frame = 0
 
         elif self.color == RED:
             if self.redright:
@@ -189,14 +225,18 @@ class Character(pygame.sprite.Sprite):
             if not all(keys):
                 self.runred = False
                 self.attackred = False
-            if keys[pygame.K_LEFT]:
+                self.attackred2 = False
+                self.shieldred = False
+            if keys[pygame.K_LEFT] and self.rect.x >= 0:
                 self.attackred = False
+                self.attackred2 = False
                 self.runred = True
                 self.rect.x -= 10
                 self.redleft = True
                 self.redright = False
-            if keys[pygame.K_RIGHT]:
+            if keys[pygame.K_RIGHT] and self.rect.x <= WIDTH - 500:
                 self.attackred = False
+                self.attackred2 = False
                 self.runred = True
 
                 self.rect.x += 10
@@ -206,9 +246,19 @@ class Character(pygame.sprite.Sprite):
                 self.jumpred = True
                 self.vel_y = -22
                 self.on_ground = False
-            if keys[pygame.K_RETURN]:
+            if keys[pygame.K_l]:
+                self.runred = False
                 self.attackred = True
-                self.attack(player1)
+                self.shieldred = False
+                self.attack(player1, player2)
+            if keys[pygame.K_k]:
+                self.runred = False
+                self.attackred2 = True
+                self.attack(player1, player2)
+            if keys[pygame.K_SPACE]:
+                self.shieldred = True
+                self.attackred2 = False
+                self.attackred = False
             if self.runred and not self.jumpred and not self.attackred:
                 self.frame += 0.2
                 if self.frame > 7:
@@ -234,7 +284,9 @@ class Character(pygame.sprite.Sprite):
                 self.image = pygame.image.load(
                     'data/Sprites/Samurai/' + filer + '/Jump/' + anim[int(self.frame)]).convert_alpha()
                 self.transforming(self.image)
-
+            if self.shieldred:
+                self.image = pygame.image.load('data/Sprites/Samurai/' + filer + '/Shield/2.png')
+                self.transforming(self.image)
             if self.attackred:
                 self.runred = False
                 self.frame += 0.2
@@ -244,6 +296,21 @@ class Character(pygame.sprite.Sprite):
                     self.image = pygame.image.load(
                         'data/Sprites/Samurai/' + filer + '/Attack_1/' + anim[int(self.frame)]).convert_alpha()
                     self.transforming(self.image)
+                except IndexError:
+                    self.frame = 0
+
+            if self.attackred2:
+                self.runred = False
+                self.frame += 0.004
+                if self.frame > 3:
+                    self.frame -= 3
+
+                anim = ['1.png', '2.png', '3.png']
+                try:
+                    self.image = pygame.image.load(
+                        'data/Sprites/Samurai/' + filer + '/Attack_2/' + anim[int(self.frame)]).convert_alpha()
+                    self.transforming(self.image)
+
                 except IndexError:
                     self.frame = 0
             if self.on_ground:
@@ -259,20 +326,38 @@ class Character(pygame.sprite.Sprite):
             self.jumpblue = False
             self.runred = False
 
-    def attack(self, opponent):
-
-        if self.rect.colliderect(opponent.rect):
-            opponent.health -= 0.5
+    def attack(self, opponent, character):
+        if character.color == BLUE and opponent.shieldred and self.rect.colliderect(opponent.rect):
+            opponent.health -= 0.1
+        elif character.color == RED and opponent.shieldblue and self.rect.colliderect(opponent.rect):
+            opponent.health -= 0.1
+        elif self.rect.colliderect(opponent.rect):
+            opponent.health -= 0.45
             print(f"{opponent.color} health: {opponent.health}")
 
     def draw(self, surface):
         screen.blit(self.image, self.rect)
-        health_bar_length = 50 * (self.health / 100)
-        pygame.draw.rect(surface, (255, 0, 0), (0, 0, health_bar_length, 5))
 
 
-player1 = Character(150, HEIGHT - 50, BLUE, 'data/Sprites/Fighter/Right/Idle/1.png')
-player2 = Character(1300, HEIGHT - 50, RED, 'data/Sprites/Samurai/Left/Idle/1.png')
+player1 = Character(150, HEIGHT - 50, BLUE, 'data/Sprites/Fighter/Right/Idle/1.png', 200, 300)
+player2 = Character(1300, HEIGHT - 50, RED, 'data/Sprites/Samurai/Left/Idle/1.png', 150, 300)
+
+
+def healthbars(surface):
+    health_bar_length = 500 * (player1.health / 100)
+    health_bar_lengthred = 500 * (player2.health / 100)
+    pygame.draw.rect(surface, (0, 0, 0), (65, 77.5, 500 + 10, 22))
+    pygame.draw.rect(surface, (255, 0, 0), (70, 80, health_bar_length, 15))
+    pygame.draw.rect(surface, (0, 0, 0), (WIDTH - 555, 77.5, 510, 22))
+    pygame.draw.rect(surface, (255, 0, 0), (WIDTH - 550, 80, health_bar_lengthred, 15))
+    f1 = pygame.font.Font('data/Fonts/japanbrush.ttf', 36)
+    text1 = f1.render('Fighter', 1, (255, 255, 255))
+    text2 = f1.render('Samurai', 1, (255, 255, 255))
+
+    screen.blit(text1, (50, 40))
+    screen.blit(text2, (1770, 40))
+
+anim_played = False
 
 while True:
     for event in pygame.event.get():
@@ -281,12 +366,22 @@ while True:
             sys.exit()
 
     keys = pygame.key.get_pressed()
-
-    player1.move(keys)
-    player2.move(keys)
-    screen.blit(bgfight, (0, 0))
-    player1.draw(screen)
-    player2.draw(screen)
+    if player1.health >= 0 and player2.health >= 0:
+        player1.move(keys)
+        player2.move(keys)
+        screen.blit(bgfight, (0, 0))
+        player1.draw(screen)
+        player2.draw(screen)
+        healthbars(screen)
+        if player2.health <= 0 and not anim_played:
+            death_anim = ['1.png', '2.png', '3.png']
+            current_frame = 0
+            if current_frame < len(death_anim):
+                player2.image = pygame.image.load('data/Sprites/Samurai/Left/Dead/' + death_anim[current_frame])
+                player2.image = player2.transforming(player2.image)
+                current_frame += 1
+            else:
+                anim_played = True
     pygame.display.flip()
 
     pygame.time.Clock().tick(60)
