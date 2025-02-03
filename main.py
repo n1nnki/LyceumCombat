@@ -11,11 +11,22 @@ WIDTH, HEIGHT = 1920, 1080
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("2D Fighting Game")
 
-bgfight = pygame.image.load('data/Backgrounds/fightbackground.png').convert()
-bgmenu = pygame.image.load('data/Backgrounds/menubackground.jpg').convert()
-bgfight = pygame.transform.scale(bgfight, (WIDTH, HEIGHT))
+bgfightRoof = pygame.image.load('data/Backgrounds/fightBackRoof.png').convert()
+bgfightBeach = pygame.image.load('data/Backgrounds/fightBackBeach.jpg').convert()
+bgfightBroken = pygame.image.load('data/Backgrounds/fightBackBroken.jpg').convert()
+bgfightMoon = pygame.image.load('data/Backgrounds/fightBackMoon.jpg').convert()
+bgmenu = pygame.image.load('data/Backgrounds/menuBack.jpg').convert()
+bgfightRoof = pygame.transform.scale(bgfightRoof, (WIDTH, HEIGHT))
+bgfightBeach = pygame.transform.scale(bgfightBeach, (WIDTH, HEIGHT))
+bgfightBroken = pygame.transform.scale(bgfightBroken, (WIDTH, HEIGHT))
+bgfightMoon = pygame.transform.scale(bgfightMoon, (WIDTH, HEIGHT))
+miniRoof = pygame.transform.scale(bgfightRoof, (500, 350))
+miniBeach = pygame.transform.scale(bgfightBeach, (500, 350))
+miniBroken = pygame.transform.scale(bgfightBroken, (500, 350))
+miniMoon = pygame.transform.scale(bgfightMoon, (500, 350))
 bgmenu = pygame.transform.scale(bgmenu, (WIDTH, HEIGHT))
-screen.blit(bgfight, (0, 0))
+screen.blit(bgfightRoof, (0, 0))
+background = bgfightRoof
 
 #музыка и звуки
 menumusic = pygame.mixer.Sound("data/Music/menuTheme.mp3")
@@ -43,13 +54,15 @@ class Menu:
                 poverhnost.blit(font.render(i[2], 1, i[3]), (i[0], i[1] - 30))
 
     def menu(self):
+        a = 3
         done = True
         font_menu = pygame.font.Font('data/Fonts/japanbrush.ttf', 200)
         pygame.key.set_repeat(0, 0)
         pygame.mouse.set_visible(True)
         punkt = 0
+        screen.blit(bgmenu, (0, 0))
+        screen.blit(miniRoof, (1300, 500))
         while done:
-            screen.blit(bgmenu, (0, 0))
             mp = pygame.mouse.get_pos()
             for i in self.punkts:
                 if mp[0] > i[0] and mp[0] < i[0] + 500 and mp[1] > i[1] and mp[1] < i[1] + 200:
@@ -67,6 +80,22 @@ class Menu:
                     if e.key == pygame.K_DOWN:
                         if punkt < len(self.punkts) - 1:
                             punkt += 1
+                    if e.key == pygame.K_LEFT:
+                        if a % 4 == 0:
+                            a -= 1
+                            screen.blit(miniRoof, (1300, 500))
+                        elif a % 4 == 1:
+                            a -= 1
+                            screen.blit(miniBeach, (1300, 500))
+                        elif a % 4 == 2:
+                            a -= 1
+                            screen.blit(miniBroken, (1300, 500))
+                        elif a % 4 == 3:
+                            a -= 1
+                            screen.blit(miniMoon, (1300, 500))
+                            background = bgfightMoon
+                    if e.key == pygame.K_RIGHT:
+                        pass
                 if e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
                     if punkt == 0:
                         done = False
@@ -374,7 +403,7 @@ while True:
     if player1.health >= 0 and player2.health >= 0:
         player1.move(keys)
         player2.move(keys)
-        screen.blit(bgfight, (0, 0))
+        screen.blit(background, (0, 0))
         player1.draw(screen)
         player2.draw(screen)
         healthbars(screen)
