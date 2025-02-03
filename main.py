@@ -369,6 +369,22 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_f:
+                sound = pygame.mixer.Sound('data/sounds/chetkiy-rezkiy-udar-kulakom.mp3')
+                sound.play()
+            if event.key == pygame.K_e:
+                sound = pygame.mixer.Sound('data/sounds/udar-so-zvukom2.mp3')
+                sound.play()
+            if event.key == pygame.K_k:
+                sound = pygame.mixer.Sound('data/sounds/trenirovochnyiy-udar-mechom.mp3')
+                sound.play()
+            if event.key == pygame.K_l:
+                sound = pygame.mixer.Sound('data/sounds/virtuoznyiy-udar-mechom-vo-vremya-trenirovki.mp3')
+                sound.play()
+            if event.key == pygame.K_ESCAPE:
+                game = Menu(a)
+                game.menu()
 
     keys = pygame.key.get_pressed()
     if player1.health >= 0 and player2.health >= 0:
@@ -378,15 +394,15 @@ while True:
         player1.draw(screen)
         player2.draw(screen)
         healthbars(screen)
-        if player2.health <= 0 and not anim_played:
-            death_anim = ['1.png', '2.png', '3.png']
-            current_frame = 0
-            if current_frame < len(death_anim):
-                player2.image = pygame.image.load('data/Sprites/Samurai/Left/Dead/' + death_anim[current_frame])
-                player2.image = player2.transforming(player2.image)
-                current_frame += 1
-            else:
-                anim_played = True
+        if player2.health <= 0:
+            f3 = pygame.font.Font('data/Fonts/japanbrush.ttf', 70)
+            text1 = f3.render(f'''Fighter wins Press ESC to enter the menu''', 1, (255, 255, 255))
+            screen.blit(text1, (300, 120))
+        if player1.health <= 0:
+            f3 = pygame.font.Font('data/Fonts/japanbrush.ttf', 70)
+            text1 = f3.render(f'''Samurai wins Press ESC to enter the menu''', 1, (255, 255, 255))
+            screen.blit(text1, (300, 120))
+
     pygame.display.flip()
 
     pygame.time.Clock().tick(60)
