@@ -62,6 +62,7 @@ class Menu:
         punkt = 0
         screen.blit(bgmenu, (0, 0))
         #screen.blit(miniRoof, (1300, 500))
+
         while done:
             mp = pygame.mouse.get_pos()
             for i in self.punkts:
