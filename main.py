@@ -15,13 +15,14 @@ bgfight = pygame.image.load('data/Backgrounds/fightbackground.png').convert()
 bgmenu = pygame.image.load('data/Backgrounds/menubackground.jpg').convert()
 bgfight = pygame.transform.scale(bgfight, (WIDTH, HEIGHT))
 bgmenu = pygame.transform.scale(bgmenu, (WIDTH, HEIGHT))
+screen.blit(bgfight, (0, 0))
+
+#музыка и звуки
+menumusic = pygame.mixer.Sound("data/Music/menuTheme.mp3")
+menumusic.play()
+fightmusic = pygame.mixer.Sound("data/Music/fightTheme.mp3")
 
 
-def DrawBack():
-    screen.blit(bgfight, (0, 0))
-
-
-DrawBack()
 
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
@@ -358,6 +359,10 @@ def healthbars(surface):
     screen.blit(text2, (1770, 40))
 
 anim_played = False
+
+#музыка
+menumusic.stop()
+fightmusic.play()
 
 while True:
     for event in pygame.event.get():
