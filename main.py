@@ -61,7 +61,7 @@ class Menu:
         pygame.mouse.set_visible(True)
         punkt = 0
         screen.blit(bgmenu, (0, 0))
-        screen.blit(miniRoof, (1300, 500))
+        #screen.blit(miniRoof, (1300, 500))
         while done:
             mp = pygame.mouse.get_pos()
             for i in self.punkts:
@@ -80,22 +80,22 @@ class Menu:
                     if e.key == pygame.K_DOWN:
                         if punkt < len(self.punkts) - 1:
                             punkt += 1
-                    if e.key == pygame.K_LEFT:
-                        if a % 4 == 0:
-                            a -= 1
-                            screen.blit(miniRoof, (1300, 500))
-                        elif a % 4 == 1:
-                            a -= 1
-                            screen.blit(miniBeach, (1300, 500))
-                        elif a % 4 == 2:
-                            a -= 1
-                            screen.blit(miniBroken, (1300, 500))
-                        elif a % 4 == 3:
-                            a -= 1
-                            screen.blit(miniMoon, (1300, 500))
-                            background = bgfightMoon
-                    if e.key == pygame.K_RIGHT:
-                        pass
+                    #if e.key == pygame.K_LEFT:
+                    #    if a % 4 == 0:
+                    #        a -= 1
+                    #        screen.blit(miniRoof, (1300, 500))
+                    #    elif a % 4 == 1:
+                    #        a -= 1
+                    #        screen.blit(miniBeach, (1300, 500))
+                    #    elif a % 4 == 2:
+                    #        a -= 1
+                    #        screen.blit(miniBroken, (1300, 500))
+                    #    elif a % 4 == 3:
+                    #        a -= 1
+                    #        screen.blit(miniMoon, (1300, 500))
+                    #        background = bgfightMoon
+                    #if e.key == pygame.K_RIGHT:
+                    #    pass
                 if e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
                     if punkt == 0:
                         done = False
